@@ -1,6 +1,13 @@
 import { ID } from "node-appwrite";
 import { createAppwriteClient } from "../../config.js";
 
+export const config = {
+  api: {
+    bodyParser: true
+  }
+};
+
+
 export default async function signup(req, res) {
 
   const allowedOrigins = [
