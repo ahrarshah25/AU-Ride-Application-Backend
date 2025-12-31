@@ -1,4 +1,4 @@
-import { ID } from "https://cdn.jsdelivr.net/npm/appwrite@15.0.0/+esm";
+import { ID } from "node-appwrite";
 import { createAppwriteClient } from "../../config.js";
 
 export default async function signup(req, res) {
