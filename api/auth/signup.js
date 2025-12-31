@@ -1,0 +1,60 @@
+import { ID } from "https://cdn.jsdelivr.net/npm/appwrite@15.0.0/+esm";
+import { createAppwriteClient } from "../../config.js";
+
+export default async function signup(req, res) {
+
+  const allowedOrigins = [
+    "https://au-ride.vercel.app",
+    "http://127.0.0.1:5500",
+    "http://localhost:5500"
+  ];
+
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
+  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  try {
+    const { name, email, pass, type } = req.body;
+
+    if (!name || !email || !pass) {
+      return res.status(400).json({
+        error: "Name, email and password are required"
+      });
+    }
+
+    const { auth } = await createAppwriteClient();
+
+    const user = await auth.create(
+      ID.unique(),
+      email,
+      pass,       
+      name
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: `Signup successful. Verification email sent to ${email}`,
+      accountType: type,
+      userId: user.$id
+    });
+
+  } catch (error) {
+    console.error("Signup Error:", error);
+    return res.status(400).json({
+      error: error.message || "Signup failed"
+    });
+  }
+}
+
