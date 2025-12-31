@@ -1,5 +1,5 @@
 import { ID } from "node-appwrite";
-import { createAppwriteClient } from "../../config.js";
+import { createAppwriteClient } from "../config.js";
 
 export const config = {
   api: {
@@ -64,4 +64,3 @@ export default async function signup(req, res) {
     });
   }
 }
-
