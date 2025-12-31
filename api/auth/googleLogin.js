@@ -1,37 +1,26 @@
 import { createAppwriteClient } from "../config.js";
 
 export default async function handler(req, res) {
+  try {
+    const { auth } = await createAppwriteClient();
 
-    const allowedOrigins = [
-        "https://au-ride.vercel.app",
-        "http://127.0.0.1:5500",
-        "http://localhost:5500"
-    ];
+    // Redirect after Google login
+    const redirectUrl = "http://localhost:5500/Front-End/auth/signup.html";
 
-    const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin)) {
-        res.setHeader("Access-Control-Allow-Origin", origin);
-    }
+    const oauth = await auth.createOAuth2Session(
+      "google",
+      redirectUrl + "?status=success",
+      redirectUrl + "?status=failed"
+    );
 
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    // Vercel serverless redirect
+    res.writeHead(302, { Location: oauth.href });
+    res.end();
 
-    if (req.method === "OPTIONS") {
-        return res.status(200).end();
-    }
-    try {
-        const { auth } = await createAppwriteClient();
-
-        const session = await auth.createOAuth2Session(
-            "google",
-            "https://au-ride.vercel.app/signup",
-            "https://au-ride.vercel.app/signup"
-        );
-
-        res.status(200).end();
-        
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: error.message });
-    }
+  } catch (error) {
+    console.error(error);
+    // Failed → same signup page with failed status
+    res.writeHead(302, { Location: redirectUrl + "?status=failed" });
+    res.end();
+  }
 }
