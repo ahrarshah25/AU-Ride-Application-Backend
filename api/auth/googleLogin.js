@@ -28,8 +28,8 @@ export default async function handler(req, res) {
             "https://au-ride.vercel.app/signup"
         );
 
-        console.log(session);
-        res.status(200).json({ success: true, session });
+        res.status(200).end();
+        
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: error.message });
