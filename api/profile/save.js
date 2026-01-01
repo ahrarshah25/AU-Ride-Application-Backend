@@ -1,5 +1,5 @@
 import { ID } from "appwrite";
-import { createAppwriteClient } from "../../config/appwrite";
+import { createAppwriteClient } from "../config/appwrite";
 import formidable from "formidable";
 
 export const config = {

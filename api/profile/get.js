@@ -1,4 +1,4 @@
-import { createAppwriteClient } from "../../config/appwrite";
+import { createAppwriteClient } from "../config/appwrite";
 
 export default async function loadProfile(req, res) {
   const allowedOrigins = [

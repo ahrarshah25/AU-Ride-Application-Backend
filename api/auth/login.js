@@ -1,4 +1,4 @@
-import { createAppwriteClient } from "../../config/appwrite";
+import { createAppwriteClient } from "../config/appwrite";
 
 export const config = {
     api: {
@@ -6,7 +6,7 @@ export const config = {
     }
 };
 
-export default async function login(res, req) {
+export default async function login(req, res) {
     const allowedOrigins = [
         "https://au-ride.vercel.app",
         "http://127.0.0.1:5500",
@@ -32,7 +32,7 @@ export default async function login(res, req) {
     try {
         const { email, password } = req.body;
 
-        if (!email || password) {
+        if (!email || !password) {
             return res.status(400).json({
                 error: "Email & Password are required."
             });

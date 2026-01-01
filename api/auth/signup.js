@@ -1,5 +1,5 @@
 import { ID } from "node-appwrite";
-import { createAppwriteClient } from "../../config/appwrite";
+import { createAppwriteClient } from "../config/appwrite";
 
 export const config = {
   api: {
