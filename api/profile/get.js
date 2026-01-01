@@ -19,6 +19,16 @@ export default async function loadProfile(req, res) {
         return res.status(200).end();
     }
 
+    if(req.method !== "GET") {
+        return res.status(405).json({ error: "Method not allowed" });
+    }
+
+    const databaseID = process.env.DB_ID;
+
+    if(!databaseID){
+      return res.status(500).json({ error: "Database ID is not configured." });
+    }
+
   try {
     const { db, auth } = await createAppwriteClient();
 
