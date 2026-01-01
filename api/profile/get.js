@@ -19,9 +19,9 @@ export default async function loadProfile(req, res) {
         return res.status(200).end();
     }
 
-    if(req.method !== "GET") {
-        return res.status(405).json({ error: "Method not allowed" });
-    }
+    // if(req.method !== "GET") {
+    //     return res.status(405).json({ error: "Method not allowed" });
+    // }
 
     const databaseID = process.env.DB_ID;
 
