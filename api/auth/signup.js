@@ -1,5 +1,5 @@
 import { ID } from "node-appwrite";
-import { createAppwriteClient } from "../config.js";
+import { createAppwriteClient } from "../../config/appwrite";
 
 export const config = {
   api: {
@@ -41,19 +41,31 @@ export default async function signup(req, res) {
       });
     }
 
-    const { auth } = await createAppwriteClient();
+    const { auth , db } = await createAppwriteClient();
 
     const user = await auth.create(
       ID.unique(),
       email,
-      pass,       
+      pass,
       name
+    );
+
+    await db.createDocument(
+      process.env.DB_ID,      
+      "users",               
+      ID.unique(),
+      {
+        userId: user.$id,
+        name: name,
+        accountType: type,
+        phone: "",
+        avatarId: ""
+      }
     );
 
     return res.status(201).json({
       success: true,
       message: `Signup successful. Verification email sent to ${email}`,
-      accountType: type,
       userId: user.$id
     });
 
