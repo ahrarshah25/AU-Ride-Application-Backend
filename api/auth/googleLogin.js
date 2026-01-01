@@ -1,26 +1,23 @@
-import { createAppwriteClient } from "../config.js";
+export default function handler(req, res) {
+  const projectId = "6952bae80027e91db515";
 
-export default async function handler(req, res) {
-  try {
-    const { auth } = await createAppwriteClient();
+  const success = encodeURIComponent(
+    "http://localhost:5500/Front-End/auth/signup.html?status=success"
+  );
 
-    // Redirect after Google login
-    const redirectUrl = "http://localhost:5500/Front-End/auth/signup.html";
+  const failure = encodeURIComponent(
+    "http://localhost:5500/Front-End/auth/signup.html?status=failed"
+  );
 
-    const oauth = await auth.createOAuth2Session(
-      "google",
-      redirectUrl + "?status=success",
-      redirectUrl + "?status=failed"
-    );
+  const oauthUrl =
+    `https://fra.cloud.appwrite.io/v1/account/sessions/oauth2/google` +
+    `?project=${projectId}` +
+    `&success=${success}` +
+    `&failure=${failure}`;
 
-    // Vercel serverless redirect
-    res.writeHead(302, { Location: oauth.href });
-    res.end();
-
-  } catch (error) {
-    console.error(error);
-    // Failed → same signup page with failed status
-    res.writeHead(302, { Location: redirectUrl + "?status=failed" });
-    res.end();
-  }
+  // 🔥 IMPORTANT PART
+  res.writeHead(302, {
+    Location: oauthUrl
+  });
+  res.end();
 }
