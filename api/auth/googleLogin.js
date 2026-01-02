@@ -2,11 +2,11 @@ export default function handler(req, res) {
   const projectId = "6952bae80027e91db515";
 
   const success = encodeURIComponent(
-    "http://localhost:5500/Front-End/auth/signup.html?status=success"
+    "https://au-ride.vercel.app/auth/signup.html?status=success"  
   );
 
   const failure = encodeURIComponent(
-    "http://localhost:5500/Front-End/auth/signup.html?status=failed"
+    "https://au-ride.vercel.app/auth/signup.html?status=failed"
   );
 
   const oauthUrl =
@@ -15,7 +15,6 @@ export default function handler(req, res) {
     `&success=${success}` +
     `&failure=${failure}`;
 
-  // 🔥 IMPORTANT PART
   res.writeHead(302, {
     Location: oauthUrl
   });

@@ -19,11 +19,11 @@ export default async function loadProfile(req, res) {
         return res.status(200).end();
     }
 
-    // if(req.method !== "GET") {
-    //     return res.status(405).json({ error: "Method not allowed" });
-    // }
+    if(req.method !== "GET") {
+        return res.status(405).json({ error: "Method not allowed" });
+    }
 
-    const databaseID = process.env.DB_ID;
+    const databaseID = "profiles";
 
     if(!databaseID){
       return res.status(500).json({ error: "Database ID is not configured." });
@@ -35,7 +35,7 @@ export default async function loadProfile(req, res) {
     const user = await auth.get();
 
     const profile = await db.listDocuments(
-      process.env.DB_ID,
+      "profiles",
       "profiles",
       [`equal("userId", "${user.$id}")`]
     );
