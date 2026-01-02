@@ -14,6 +14,7 @@ export default async function loadProfile(req, res) {
 
     res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
 
     if (req.method === "OPTIONS") {
         return res.status(200).end();
@@ -26,7 +27,7 @@ export default async function loadProfile(req, res) {
     const databaseID = "profiles";
 
     if(!databaseID){
-      return res.status(500).json({ error: "Database ID is not configured." });
+      return res.status(400).json({ error: "Database ID is not configured." });
     }
 
   try {
@@ -53,6 +54,6 @@ export default async function loadProfile(req, res) {
     });
 
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 }

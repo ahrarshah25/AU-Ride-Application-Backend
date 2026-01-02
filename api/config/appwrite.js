@@ -16,6 +16,10 @@ export async function createAppwriteClient() {
     throw new Error("Failed to initialize Appwrite client.");
   }
 
+  if (req?.headers?.cookie) {
+    client.headers["cookie"] = req.headers.cookie;
+  }
+
   try {
     const auth = new Account(client);
     const db = new Databases(client);
