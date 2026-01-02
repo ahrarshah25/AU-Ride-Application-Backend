@@ -1,24 +1,42 @@
 import { Client, Account, Databases, Storage } from "appwrite";
 
-export function createAppwriteClient(req = null) {
+export async function createAppwriteClient(req = null) {
   const projectId = process.env.PROJECT_ID;
   const endPoint = process.env.ENDPOINT;
 
   if (!projectId || !endPoint) {
-    throw new Error("Missing environment variables");
+    throw new Error("Missing environment variables: PROJECT_ID or ENDPOINT.");
   }
 
   const client = new Client();
-  client.setEndpoint(endPoint).setProject(projectId);
+  try {
+    client.setEndpoint(endPoint).setProject(projectId);
+  } catch (error) {
+    console.error("Error initializing Appwrite Client:", error);
+    throw new Error("Failed to initialize Appwrite client.");
+  }
 
-  // session cookie forward
-  if (req?.headers?.cookie) {
+  if (req && req.headers && req.headers.cookie) {
     client.headers["cookie"] = req.headers.cookie;
   }
 
-  const auth = new Account(client);
-  const db = new Databases(client);
-  const storage = new Storage(client);
+  try {
+    const auth = new Account(client);
+    const db = new Databases(client);
+    const storage = new Storage(client);
 
-  return { client, auth, db, storage };
+    return { client, auth, db, storage };
+  } catch (error) {
+    console.error("Error initializing Appwrite services:", error);
+    throw new Error("Failed to initialize Appwrite services.");
+  }
 }
+
+export default async (req, res) => {
+  try {
+    const { client, auth, db, storage } = createAppwriteClient(req);
+    res.status(200).json({ message: "Appwrite Client initialized successfully!" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
