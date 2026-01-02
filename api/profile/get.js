@@ -39,7 +39,7 @@ export default async function loadProfile(req, res) {
 
     const profile = await db.listDocuments(
       "profiles",
-      "profiles",
+      "users",
       [`equal("userId", "${user.$id}")`]
     );
 

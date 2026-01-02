@@ -55,14 +55,14 @@ export default async function saveProfile(req, res) {
 
     const existing = await db.listDocuments(
       "profiles",
-      "profiles",
+      "users",
       [`equal("userId", "${user.$id}")`]
     );
 
     if (existing.total === 0) {
       await db.createDocument(
         "profiles",
-        "profiles",
+        "users",
         ID.unique(),
         {
           userId: user.$id,
@@ -74,7 +74,7 @@ export default async function saveProfile(req, res) {
     } else {
       await db.updateDocument(
         "profiles",
-        "profiles",
+        "users",
         existing.documents[0].$id,
         {
           name,
