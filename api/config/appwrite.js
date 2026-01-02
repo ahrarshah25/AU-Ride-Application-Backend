@@ -34,12 +34,12 @@ export async function createAppwriteClient(req = null) {
 
 // This line is the important part. If this is an entry point for an API or server,
 // ensure you export a function, not just an object or config.
-export default async (req, res) => {
-  try {
-    const { client, auth, db, storage } = await createAppwriteClient();
+// export default async (req, res) => {
+//   try {
+//     const { client, auth, db, storage } = await createAppwriteClient();
     // You can now use these in your API route logic
-    res.status(200).json({ message: "Appwrite Client initialized successfully!" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+//     res.status(200).json({ message: "Appwrite Client initialized successfully!" });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
