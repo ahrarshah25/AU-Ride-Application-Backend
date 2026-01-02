@@ -41,7 +41,7 @@ export default async function signup(req, res) {
       });
     }
 
-    const { auth , db } = await createAppwriteClient();
+    const { auth , db } = await createAppwriteClient(req);
 
     const user = await auth.create(
       ID.unique(),

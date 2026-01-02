@@ -1,6 +1,6 @@
 import { Client, Account, Databases, Storage } from "appwrite";
 
-export async function createAppwriteClient() {
+export async function createAppwriteClient(req = null) {
   const projectId = process.env.PROJECT_ID;
   const endPoint = process.env.ENDPOINT;
 
@@ -16,7 +16,7 @@ export async function createAppwriteClient() {
     throw new Error("Failed to initialize Appwrite client.");
   }
 
-  if (req?.headers?.cookie) {
+  if (req && req.headers && req.headers.cookie) {
     client.headers["cookie"] = req.headers.cookie;
   }
 

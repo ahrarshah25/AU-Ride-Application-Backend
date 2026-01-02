@@ -39,7 +39,7 @@ export default async function saveProfile(req, res) {
     });
 
     const { name, phone } = fields;
-    const { db, auth, storage } = await createAppwriteClient();
+    const { db, auth, storage } = await createAppwriteClient(req);
 
     const user = await auth.get();
 
