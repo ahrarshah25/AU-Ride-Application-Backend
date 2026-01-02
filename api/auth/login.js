@@ -38,7 +38,7 @@ export default async function login(req, res) {
             });
         };
 
-        const { auth } = await createAppwriteClient(req);
+        const { auth } = createAppwriteClient(req);
 
         const user = await auth.createEmailPasswordSession(
             email,

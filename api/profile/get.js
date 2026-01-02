@@ -31,7 +31,7 @@ export default async function loadProfile(req, res) {
     }
 
   try {
-    const { db, auth } = await createAppwriteClient(req);
+    const { db, auth } = createAppwriteClient(req);
 
     const user = await auth.get();
     if(!user){
