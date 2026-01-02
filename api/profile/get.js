@@ -33,8 +33,8 @@ export default async function loadProfile(req, res) {
     const { db, auth } = await createAppwriteClient();
 
     const user = await auth.get();
-    if(user){
-      return res.status(400).json({message: "User Found"})
+    if(!user){
+      return res.status(400).json({message: "User Not Found"})
     }
 
     const profile = await db.listDocuments(
