@@ -20,10 +20,6 @@ export default async function loadProfile(req, res) {
         return res.status(200).end();
     }
 
-    if(req.method !== "GET") {
-        return res.status(405).json({ error: "Method not allowed" });
-    }
-
     const databaseID = "profiles";
 
     if(!databaseID){
@@ -34,8 +30,13 @@ export default async function loadProfile(req, res) {
     const { db, auth } = createAppwriteClient(req);
 
     const user = await auth.get();
+
     if(!user){
       return res.status(400).json({message: "User Not Found"})
+    }
+
+    if(user){
+      return res.status(200).json({message: "User Found - User ID: " + user.$id})
     }
 
     const profile = await db.listDocuments(
