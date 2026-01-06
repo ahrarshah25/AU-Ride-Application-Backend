@@ -14,7 +14,7 @@ export default async function signup(req, res) {
     "https://au-ride.vercel.app",
     "http://127.0.0.1:5500",
     "http://localhost:5500",
-    "http://100.115.92.205:5505/"
+    "http://100.115.92.205:5505"
   ];
 
   const origin = req.headers.origin;
