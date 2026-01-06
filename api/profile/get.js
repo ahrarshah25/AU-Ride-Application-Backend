@@ -7,13 +7,13 @@ export const config = {
 };
 
 // Helper function to parse cookies
-function getTokenFromCookies(cookieHeader) {
-  if (!cookieHeader) return null;
-  const cookies = cookieHeader.split(";").map(c => c.trim());
-  const tokenCookie = cookies.find(c => c.startsWith("token="));
-  if (!tokenCookie) return null;
-  return tokenCookie.split("=")[1];
-}
+// function getTokenFromCookies(cookieHeader) {
+//   if (!cookieHeader) return null;
+//   const cookies = cookieHeader.split(";").map(c => c.trim());
+//   const tokenCookie = cookies.find(c => c.startsWith("token="));
+//   if (!tokenCookie) return null;
+//   return tokenCookie.split("=")[1];
+// }
 
 export default async function getProfile(req, res) {
   const allowedOrigins = [
@@ -37,11 +37,11 @@ export default async function getProfile(req, res) {
 
   try {
     // ✅ Get JWT from cookie
-    const token = getTokenFromCookies(req.headers.cookie);
-    if (!token) return res.status(401).json({ error: "Unauthorized" });
+    const authHeader = req.headers.authorization;
+if (!authHeader) return res.status(401).json({ error: "Unauthorized" });
+const token = authHeader.split(" ")[1];
+const decoded = jwt.verify(token, "2f5c2ef6ffbdf785c5f23490758cc575");
 
-    // ✅ Verify JWT
-    const decoded = jwt.verify(token, "2f5c2ef6ffbdf785c5f23490758cc575");
     const userId = decoded.userId;
 
     // ✅ Appwrite DB
