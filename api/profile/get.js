@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { createAppwriteClient } from "../config/appwrite";
 
 export default async function getProfile(req, res) {
@@ -20,7 +21,15 @@ export default async function getProfile(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
 
   try {
-    const token = req.headers.cookie?.split("token=")[1];
+    // ✅ Proper cookie parsing
+    const cookieHeader = req.headers.cookie;
+    let token = null;
+    if (cookieHeader) {
+      const cookies = cookieHeader.split(";").map(c => c.trim());
+      const tokenCookie = cookies.find(c => c.startsWith("token="));
+      token = tokenCookie?.split("=")[1] ?? null;
+    }
+
     if (!token) return res.status(401).json({ error: "Unauthorized" });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -39,6 +48,6 @@ export default async function getProfile(req, res) {
     res.json({ exists: true, profile: result.documents[0] });
 
   } catch (error) {
-    res.status(401).json({ error: "Unauthorized" + error.message });
+    res.status(401).json({ error: "Unauthorized: " + error.message });
   }
 }
