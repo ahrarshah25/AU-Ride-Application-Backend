@@ -48,7 +48,7 @@ export default async function login(req, res) {
       {
         userId: user.userId,
       },
-      process.env.JWT_SECRET,
+    "2f5c2ef6ffbdf785c5f23490758cc575",
       {
         expiresIn: "7d",
       }

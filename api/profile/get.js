@@ -38,7 +38,7 @@ export default async function getProfile(req, res) {
 
     res.json({ exists: true, profile: result.documents[0] });
 
-  } catch {
-    res.status(401).json({ error: "Unauthorized" });
+  } catch (error) {
+    res.status(401).json({ error: "Unauthorized" + error.message });
   }
 }

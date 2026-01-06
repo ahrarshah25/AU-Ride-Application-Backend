@@ -67,7 +67,7 @@ export default async function signup(req, res) {
 
     const token = jwt.sign(
       { userId: user.$id },
-      process.env.JWT_SECRET,
+      "2f5c2ef6ffbdf785c5f23490758cc575",
       { expiresIn: "7d" }
     );
 
