@@ -18,6 +18,7 @@ export default async function login(req, res) {
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
   }
 
   res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
@@ -55,9 +56,9 @@ export default async function login(req, res) {
     );
 
     res.setHeader(
-      "Set-Cookie",
-      `token=${token}; HttpOnly; Path=/; SameSite=Lax`
-    );
+  "Set-Cookie",
+  `token=${token}; HttpOnly; Path=/; SameSite=None; Secure`
+);
 
     return res.status(201).json({
       success: true,
