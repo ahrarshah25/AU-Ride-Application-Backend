@@ -20,26 +20,25 @@ export default async function getProfile(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
 
   try {
-    const { auth, db } = createAppwriteClient(req);
+    const token = req.headers.cookie?.split("token=")[1];
+    if (!token) return res.status(401).json({ error: "Unauthorized" });
 
-    const user = await auth.get();
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
+    const { db } = createAppwriteClient(req);
 
     const result = await db.listDocuments(
       "profiles",
       "users",
-      [`equal("userId", "${user.$id}")`]
+      [`equal("userId", "${userId}")`]
     );
 
-    if (result.total === 0) {
-      return res.json({ exists: false });
-    }
+    if (result.total === 0) return res.json({ exists: false });
 
-    return res.json({
-      exists: true,
-      profile: result.documents[0]
-    });
+    res.json({ exists: true, profile: result.documents[0] });
 
-  } catch (err) {
-    return res.status(401).json({ error: "Unauthorized" });
+  } catch {
+    res.status(401).json({ error: "Unauthorized" });
   }
 }

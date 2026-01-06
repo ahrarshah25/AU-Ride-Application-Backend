@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { ID } from "node-appwrite";
 import { createAppwriteClient } from "../config/appwrite";
 
@@ -62,6 +63,17 @@ export default async function signup(req, res) {
         phone: "",
         avatarId: ""
       }
+    );
+
+    const token = jwt.sign(
+      { userId: user.$id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.setHeader(
+      "Set-Cookie",
+      `token=${token}; HttpOnly; Path=/; SameSite=None; Secure`
     );
 
     return res.status(201).json({
