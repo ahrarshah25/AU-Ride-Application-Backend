@@ -56,7 +56,7 @@ export default async function login(req, res) {
 
     res.setHeader(
       "Set-Cookie",
-      `token=${token}; HttpOnly; Path=/; SameSite=None; Secure`
+      `token=${token}; HttpOnly; Path=/; SameSite=Lax`
     );
 
     return res.status(201).json({
